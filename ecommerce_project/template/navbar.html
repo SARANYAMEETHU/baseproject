@@ -1,0 +1,51 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'shop:allProdCat'%}">
+      <img src="{% static 'image/store.png' %}" alt="Bootstrap" width="40px" height="40px">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'shop:allProdCat'%}">Home</a>
+        </li>
+        <li class="nav-item dropdown {% if 'shop' in request.path %} active {% endif %}">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Shop
+          </a>
+          <ul class="dropdown-menu">
+            {% for cat in links %}
+
+            <li><a class="dropdown-item" href="{{cat.get_url}}">{{cat.name}}</a></li>
+          {% endfor %}
+          </ul>
+        </li>
+        {% if item_count > 0 %}
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'Cart:cart_detail'%}"><i class="fa-solid fa-cart-shopping"></i>Your Cart({{item_count}})</a>
+        </li>
+        {% endif %}
+       </ul>
+      <form class="d-flex " action="{% url 'Search_app:SearchResult' %}" role="search" method="get">
+        {% csrf_token %}
+        <input class="form-control me-2 " type="search" placeholder="Search" name="q" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+
+
+<!--<nav>-->
+<!--    <ul>-->
+<!--       <li><a href=" {% url 'shop:allProdCat' %}">ALL PRODUCTS</a></li>-->
+<!--        {% for cat in links %}-->
+<!--        <li> <a href="{{cat.get_url}}">{{cat.name}}</a></li>-->
+<!--        {% endfor %}-->
+<!--        <li> Your Cart ()</li>-->
+<!--    </ul>-->
+<!--</nav>-->

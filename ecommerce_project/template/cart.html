@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+   Shopping carts are essential for anyone who buys groceries regularly. They can make your shopping experience easier, faster, and more comfortable.
+{% endblock %}
+{% block title %}
+SSS shop CART page
+{% endblock %}
+{% block content %}
+{% if not cart_items %}
+<div>
+   <div class="text-center">
+      <br>
+      <h1 class="text-center my_title">Oops your cart is empty</h1>
+      <br>
+      <p class="text-center">
+         Must add items on cart before checkout... please <a href=" {% url 'shop:allProdCat' %}">Click Here</a> to continue shopping.
+      </p>
+   </div>
+</div>
+{% else %}
+<div>
+   <div class="text-center">
+      <br>
+      <h1 class="text-center my_title"> your cart </h1>
+      <br>
+   </div>
+</div>
+<div>
+   <div class="row mx_auto">
+      <div class="text-center col-12 col-sm-12 col-md-12 col-lg-6">
+         <table class="table my_custom">
+            <thead class="my_custom_thead">
+               <tr>
+                  <th colspan='5'> Your Items</th>
+               </tr>
+            </thead>
+            <tbody>
+            {% for cartitem in cart_items %}
+            <tr>
+               <td>
+                  <a href="cartitem.product.get_absolute_url"><img src="{{cartitem.product.image.url}}" style="width:100px;height:100px" class=" float-left rounded custom_image" alt=""> </a>
+
+               </td>
+               <td class="text-left">
+                  {{cartitem.product.name}}
+                  <br>
+                  SKU: {{cartitem.product.id}}
+                  <br>
+                  Price: Rs.{{cartitem.product.price}}
+                  <br>
+                  Quantity:{{cartitem.quantity}} x {{cartitem}}
+               </td>
+               <td>
+                  Rs. {{cartitem.sub_total}}
+               </td>
+               {% if cartitem.quantity < cartitem.product.stock %}
+               <td>
+                  <a href="{% url 'Cart:add_cart' cartitem.product.id %}" class="custom_a"><i class="fa fa-plus-square" ></i></a>
+                  &nbsp;<a href="{% url 'Cart:cart_remove' cartitem.product.id %}" class="custom_a"><i class="fa fa-minus-square"></i></a>
+                  &nbsp;<a href="{% url 'Cart:product_remove' cartitem.product.id %}" class="custom_icon"><i class="fa fa-trash" ></i></a>
+               </td>
+               {% else %}
+               <td>
+                  &nbsp;<a href="{% url 'Cart:cart_remove' cartitem.product.id %}" class="custom_a"><i class="fa fa-minus-square"></i></a>
+                  &nbsp;<a href="{% url 'Cart:product_remove' cartitem.product.id %}" class="custom_icon"><i class="fa fa-trash" ></i></a>
+               </td>
+            </tr>
+            {% endif %}
+            </tbody>
+           {% endfor %}
+            <tr>
+               <td class="text-right">Your total is Rs. <strong> {{ total }} </strong> </td>
+            </tr>
+         </table>
+
+      </div>
+      <div class="mx_auto">
+         <a href="{% url 'shop:allProdCat' %}" class="btn btn-secondary btn-block custom_button">continue shopping
+         </a>
+      </div>
+
+   </div>
+   {% endif %}
+</div>
+
+{% endblock %}
